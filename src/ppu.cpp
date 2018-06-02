@@ -1018,6 +1018,18 @@ void FCEUI_GetRenderPlanes(bool& sprites, bool& bg) {
 	bg = renderbg;
 }
 
+static int rendernametable = 0;
+
+int FCEUI_GetRenderNametable()
+{
+	return rendernametable;
+}
+
+void FCEUI_SetRenderNametable(int addr)
+{
+	rendernametable = addr & 0x2C00;
+}
+
 static void CheckSpriteHit(int p);
 
 static void EndRL(void) {
@@ -2269,6 +2281,63 @@ int FCEUX_PPU_Loop(int skip) {
 
 						*ptr++ = PaletteAdjustPixel(pixelcolor);
 						*dptr++= PPU[1]>>5; //grab deemph
+					}
+				}
+			}
+
+			if (rendernametable && (yp >= 0 && yp < 240))
+			{
+				bool renderchr = (rendernametable == 0x0C00);
+
+				int ty = yp % 8;
+				int nmt_line = rendernametable + ((yp / 8) * 32);
+				int chr_page = ppur.s ? 0x1000 : 0x0000;
+				uint8* ptr = XBuf + (yp << 8);
+				uint8* dptr = XDBuf + (yp << 8);
+				int att_ys = (yp % 32) < 16 ? 0 : 4;
+
+				for (int t=0; t<32; ++t)
+				{
+					int att_xs = (t % 4) < 2 ? 0 : 2;
+					int nmt_addr = nmt_line + t;
+					int att_addr = 0x23C0 | (nmt_addr & 0x0C00) | ((nmt_addr >> 4) & 0x38) | ((nmt_addr >> 2) & 0x07);
+
+					uint8 tile    = FFCEUX_PPURead_Default(nmt_addr);
+					uint8 attrib4 = FFCEUX_PPURead_Default(att_addr);
+					uint8 attrib  = ((attrib4 >> (att_ys | att_xs)) & 0x3) << 2;
+
+					if (renderchr)
+					{
+						if (yp >= (128+8)) break; // leave bottom of screen untouched
+						tile = (t % 16) | ((yp / 8) * 16);
+						chr_page = (t < 16) ? 0x0000 : 0x1000;
+						attrib = 0;
+					}
+
+					int tile_addr = chr_page | (tile * 16) + ty;
+					uint8 tile0 = FFCEUX_PPURead_Default(tile_addr+0);
+					uint8 tile1 = FFCEUX_PPURead_Default(tile_addr+8);
+
+					for (int tx=0; tx<8; ++tx)
+					{
+						uint8 pixel = (((tile1 & 0x80) | ((tile0 & 0x80) >> 1)) >> 6) | attrib;
+						tile0 <<= 1;
+						tile1 <<= 1;
+
+						uint8 pixelcolor = READPAL(pixel);
+						if (renderchr)
+						{
+							const uint8 GREY[4] = { 0x0F, 0x00, 0x10, 0x20 };
+							pixelcolor = GREY[pixel & 3];
+							if (yp >= 128)
+							{
+								pixelcolor = READPAL(t); // visualize palette
+								if ((t & 3) == 0) pixelcolor = READPAL(0);
+							}
+						}
+
+						*ptr++ = PaletteAdjustPixel(pixelcolor);
+						*dptr++= PPU[1]>>5;
 					}
 				}
 			}

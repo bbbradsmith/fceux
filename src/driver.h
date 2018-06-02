@@ -94,6 +94,8 @@ void FCEUI_DisableSpriteLimitation(int a);
 
 void FCEUI_SetRenderPlanes(bool sprites, bool bg);
 void FCEUI_GetRenderPlanes(bool& sprites, bool& bg);
+int FCEUI_GetRenderNametable();
+void FCEUI_SetRenderNametable(int addr);
 
 //name=path and file to load.  returns null if it failed
 FCEUGI *FCEUI_LoadGame(const char *name, int OverwriteVidMode, bool silent = false);

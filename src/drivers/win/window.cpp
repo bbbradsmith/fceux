@@ -406,6 +406,7 @@ void UpdateCheckedMenuItems()
 {
 	bool spr, bg;
 	FCEUI_GetRenderPlanes(spr,bg);
+	int nmt= FCEUI_GetRenderNametable();
 
 	static int *polo[] = { &genie, &status_icon};
 	static int polo2[]={ MENU_GAME_GENIE, MENU_SHOW_STATUS_ICON };
@@ -444,6 +445,11 @@ void UpdateCheckedMenuItems()
 	CheckMenuItem(fceumenu, ID_DISPLAY_MOVIESTATUSICON, status_icon ? MF_CHECKED : MF_UNCHECKED);
 	CheckMenuItem(fceumenu, MENU_DISPLAY_BG, bg?MF_CHECKED:MF_UNCHECKED);
 	CheckMenuItem(fceumenu, MENU_DISPLAY_OBJ, spr?MF_CHECKED:MF_UNCHECKED);
+	CheckMenuItem(fceumenu, MENU_DISPLAY_2000, nmt==0x2000 ? MF_CHECKED : MF_UNCHECKED);
+	CheckMenuItem(fceumenu, MENU_DISPLAY_2400, nmt==0x2400 ? MF_CHECKED : MF_UNCHECKED);
+	CheckMenuItem(fceumenu, MENU_DISPLAY_2800, nmt==0x2800 ? MF_CHECKED : MF_UNCHECKED);
+	CheckMenuItem(fceumenu, MENU_DISPLAY_2C00, nmt==0x2C00 ? MF_CHECKED : MF_UNCHECKED);
+	CheckMenuItem(fceumenu, MENU_DISPLAY_CHR,  nmt==0x0C00 ? MF_CHECKED : MF_UNCHECKED);
 	CheckMenuItem(fceumenu, ID_INPUTDISPLAY_OLDSTYLEDISP, oldInputDisplay?MF_CHECKED:MF_UNCHECKED);
 
 	//Config - Region SubMenu
@@ -2018,6 +2024,31 @@ LRESULT FAR PASCAL AppWndProc(HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam)
 						spr = !spr;
 					FCEUI_SetRenderPlanes(spr,bg);
 				}
+				break;
+			case MENU_DISPLAY_2000:
+				if (FCEUI_GetRenderNametable() != 0x2000)
+				         FCEUI_SetRenderNametable(0x2000);
+				else     FCEUI_SetRenderNametable(0x0000);
+				break;
+			case MENU_DISPLAY_2400:
+				if (FCEUI_GetRenderNametable() != 0x2400)
+				         FCEUI_SetRenderNametable(0x2400);
+				else     FCEUI_SetRenderNametable(0x0000);
+				break;
+			case MENU_DISPLAY_2800:
+				if (FCEUI_GetRenderNametable() != 0x2800)
+				         FCEUI_SetRenderNametable(0x2800);
+				else     FCEUI_SetRenderNametable(0x0000);
+				break;
+			case MENU_DISPLAY_2C00:
+				if (FCEUI_GetRenderNametable() != 0x2C00)
+				         FCEUI_SetRenderNametable(0x2C00);
+				else     FCEUI_SetRenderNametable(0x0000);
+				break;
+			case MENU_DISPLAY_CHR:
+				if (FCEUI_GetRenderNametable() != 0x0C00)
+				         FCEUI_SetRenderNametable(0x0C00);
+				else     FCEUI_SetRenderNametable(0x0000);
 				break;
 
 			case ID_NEWPPU:

@@ -1935,6 +1935,11 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "Graphics: &BG",               MENU_DISPLAY_BG
             MENUITEM "Graphics: &OBJ",              MENU_DISPLAY_OBJ
+            MENUITEM "Nametable: $2000",             MENU_DISPLAY_2000
+            MENUITEM "Nametable: $2400",             MENU_DISPLAY_2400
+            MENUITEM "Nametable: $2800",             MENU_DISPLAY_2800
+            MENUITEM "Nametable: $2C00",             MENU_DISPLAY_2C00
+            MENUITEM "Pattern Table",                MENU_DISPLAY_CHR
         END
         MENUITEM SEPARATOR
         POPUP "Region"

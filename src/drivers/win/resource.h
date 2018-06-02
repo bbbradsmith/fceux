@@ -1247,6 +1247,11 @@
 #define DISASM_CONTEXT_COPY             40598
 #define MENU_MV_FILE_LOAD_OAM           40599
 #define DISASM_CONTEXT_SELECTALL        40599
+#define MENU_DISPLAY_2000               40600
+#define MENU_DISPLAY_2400               40601
+#define MENU_DISPLAY_2800               40602
+#define MENU_DISPLAY_2C00               40603
+#define MENU_DISPLAY_CHR                40604
 #define IDC_DEBUGGER_ICONTRAY           55535
 #define MW_ValueLabel2                  65423
 #define MW_ValueLabel1                  65426
