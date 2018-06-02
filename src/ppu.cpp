@@ -2200,6 +2200,8 @@ int FCEUX_PPU_Loop(int skip) {
 						uint8 pixel = 0;
 						uint8 pixelcolor = blank;
 
+						bool rendered = false;
+
 						//according to qeed's doc, use palette 0 or $2006's value if it is & 0x3Fxx
 						if (!ScreenON && !SpriteON)
 						{
@@ -2219,6 +2221,8 @@ int FCEUX_PPU_Loop(int skip) {
 						}
 						if (renderbg)
 							pixelcolor = READPAL(pixel);
+
+						rendered = renderbg;
 
 						//look for a sprite to be drawn
 						bool havepixel = false;
@@ -2254,7 +2258,8 @@ int FCEUX_PPU_Loop(int skip) {
 								havepixel = true;
 
 								//priority handling
-								if (oam[2] & 0x20) {
+								//if (oam[2] & 0x20) {
+								if (oam[2] & 0x20 && renderbg) {
 									//behind background:
 									if ((pixel & 3) != 0) continue;
 								}
@@ -2263,12 +2268,23 @@ int FCEUX_PPU_Loop(int skip) {
 								spixel |= (oam[2] & 3) << 2;
 
 								if (rendersprites)
+								{
 									pixelcolor = READPAL(0x10 + spixel);
+									rendered = true;
+								}
 							}
 						}
 
-						*ptr++ = PaletteAdjustPixel(pixelcolor);
-						*dptr++= PPU[1]>>5; //grab deemph
+						if (rendered)
+						{
+							*ptr++ = PaletteAdjustPixel(pixelcolor);
+							*dptr++= PPU[1]>>5; //grab deemph
+						}
+						else
+						{
+							*ptr++ = 20; // bright magenta
+							*dptr++ = 0; // no deemph
+						}
 					}
 				}
 			}
