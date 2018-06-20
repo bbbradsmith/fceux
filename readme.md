@@ -1,3 +1,13 @@
+test_nametables branch
+
+This is a special build of FCEUX for making videos explaining the internal operation of the NES.
+
+You will find four nametables, and the pattern table available under Config > Display. Choose one of them to have them replace the rendered picture. Generally you will want to record a movie of the action you wish to capture first, then render it multiple times with different display settings.
+
+
+
+
+
 # fceux [![Build status](https://ci.appveyor.com/api/projects/status/github/TASVideos/fceux?branch=master&svg=true)](https://ci.appveyor.com/project/zeromus/fceux)
 
 An open source NES Emulator for Windows and Unix that features solid emulation accuracy and state of the art tools for power users. For some reason casual gamers use it too.
