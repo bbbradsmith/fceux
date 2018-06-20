@@ -4,7 +4,7 @@ This is a special build of FCEUX for making videos explaining the internal opera
 
 Under Config > Display you may normally turn off the BG layer to see just the sprites, but in this "unmasked" branch sprites that are hiding behind the background image are not hidde, so you can see these hidden ones too.
 
-Usign gNoBGFillColor=255 in your FCEUX.cfg will also replace unrendered parts of the image with a unique key colour that may be useful for masking them, if trying to prepare overlays.
+Usign gNoBGFillColor in your FCEUX.cfg to replace unrendered parts of the image with a specified colour that may be useful for masking them, if trying to prepare overlays. 255 is the default which just uses the existing background colour, but I recommend using a seldom used black (e.g. the forbidden colour 13) and using a custom palette to replace that with a useful key colour.
 
 New PPU setting is required.
 
